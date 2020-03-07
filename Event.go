@@ -13,6 +13,10 @@ import "C"
 
 type GstEvent C.GstEvent
 
+func (s *C.GstEvent) impl() *GstEvent {
+	return (*GstEvent)(s)
+}
+
 func (e *GstEvent) native() *C.GstEvent {
 	return (*C.GstEvent)(e)
 }

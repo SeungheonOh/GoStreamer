@@ -13,6 +13,10 @@ import "C"
 
 type GstBus C.GstBus
 
+func (s *C.GstBus) impl() *GstBus {
+	return (*GstBus)(s)
+}
+
 func (b *GstBus) native() *C.GstBus {
 	return (*C.GstBus)(b)
 }

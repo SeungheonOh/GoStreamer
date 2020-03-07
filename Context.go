@@ -13,6 +13,10 @@ import "C"
 
 type GstContext C.GstContext
 
+func (s *C.GstContext) impl() *GstContext {
+	return (*GstContext)(s)
+}
+
 func (c *GstContext) native() *C.GstContext {
 	return (*C.GstContext)(c)
 }

@@ -9,6 +9,10 @@ import "C"
 
 type GstPad C.GstPad
 
+func (s *C.GstPad) impl() *GstPad {
+	return (*GstPad)(s)
+}
+
 func (p *GstPad) native() *C.GstPad {
 	return (*C.GstPad)(p)
 }

@@ -13,6 +13,10 @@ import "C"
 
 type GstObject C.GstObject
 
+func (s *C.GstObject) impl() *GstObject {
+	return (*GstObject)(s)
+}
+
 func (o *GstObject) native() *C.GstObject {
 	return (*C.GstObject)(o)
 }

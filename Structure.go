@@ -9,6 +9,10 @@ import "C"
 
 type GstStructure C.GstStructure
 
+func (s *C.GstStructure) impl() *GstStructure {
+	return (*GstStructure)(s)
+}
+
 func (s *GstStructure) native() *C.GstStructure {
 	return (*C.GstStructure)(s)
 }

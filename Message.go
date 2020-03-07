@@ -44,12 +44,16 @@ const (
 	GST_MESSAGE_ANY              GstMessageType = 429496729
 )
 
-func GstMessageNewApplication(src *GstObject, structure *GstStructure) *GstMessage {
-	return (*GstMessage)(C.gst_message_new_application(src.native(), structure.native()))
+func (s *C.GstMessage) impl() *GstMessage {
+	return (*GstMessage)(s)
 }
 
 func (m *GstMessage) native() *C.GstMessage {
 	return (*C.GstMessage)(m)
+}
+
+func GstMessageNewApplication(src *GstObject, structure *GstStructure) *GstMessage {
+	return (*GstMessage)(C.gst_message_new_application(src.native(), structure.native()))
 }
 
 func (m *GstMessage) GstMessageUnref() {

@@ -63,6 +63,10 @@ const (
 	GST_STATE_SRC     GstURIType = 2
 )
 
+func (s *C.GstElement) impl() *GstElement {
+	return (*GstElement)(s)
+}
+
 func (e *GstElement) native() *C.GstElement {
 	return (*C.GstElement)(e)
 }
@@ -114,12 +118,7 @@ func (e *GstElement) GetContextUnlocked(context_type string) *GstContext {
 func (e *GstElement) GetMetadata(key string) string {
 	k := (*C.gchar)(C.CString(key))
 	defer C.g_free((C.gpointer)(unsafe.Pointer(k)))
-	s := C.gst_element_get_metadata(e.native(), k)
-	defer C.g_free((C.gpointer)(unsafe.Pointer(s)))
-	if s == nil {
-		return ""
-	}
-	return C.GoString(s)
+	return C.GoString(C.gst_element_get_metadata(e.native(), k))
 }
 
 func (e *GstElement) GetPadTemplate(name string) *GstPadTemplate {

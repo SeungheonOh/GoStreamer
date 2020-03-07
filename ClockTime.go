@@ -9,6 +9,10 @@ import "C"
 
 type GstClockTime C.GstClockTime
 
+func (s *C.GstClockTime) impl() *GstClockTime {
+	return (*GstClockTime)(s)
+}
+
 func (c *GstClockTime) native() *C.GstClockTime {
 	return (*C.GstClockTime)(c)
 }
