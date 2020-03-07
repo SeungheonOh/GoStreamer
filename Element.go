@@ -1,7 +1,6 @@
-package main
+package gostreamer
 
 import (
-	"fmt"
 	"unsafe"
 )
 
@@ -299,9 +298,4 @@ func (state GstState) GetName() string {
 
 func (state_ret GstStateChangeReturn) GetName() string {
 	return C.GoString(C.gst_element_state_change_return_get_name(C.GstStateChangeReturn(state_ret)))
-}
-
-func main() {
-	fmt.Println(GstElementStateGetName(GST_STATE_NULL))
-	fmt.Println(GST_STATE_READY.GetName())
 }

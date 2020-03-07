@@ -1,4 +1,4 @@
-package main
+package gostreamer
 
 /*
 #cgo pkg-config: gstreamer-1.0

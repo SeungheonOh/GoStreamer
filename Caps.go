@@ -1,4 +1,4 @@
-package main
+package gostreamer
 
 import (
 //	"unsafe"
@@ -15,4 +15,10 @@ type GstCaps C.GstCaps
 
 func (p *GstCaps) native() *C.GstCaps {
 	return (*C.GstCaps)(p)
+}
+
+// Constructors
+func GstCapsNewAny() *GstCaps {
+	c := C.gst_caps_new_any()
+	return (*GstCaps)(c)
 }
