@@ -18,7 +18,17 @@ func (p *GstCaps) native() *C.GstCaps {
 }
 
 // Constructors
-func GstCapsNewAny() *GstCaps {
+func CapsNewAny() *GstCaps {
+	c := C.gst_caps_new_any()
+	return (*GstCaps)(c)
+}
+
+func CapsNewEmpty() *GstCaps {
+	//c := C.gst_caps_new_any()
+	return (*GstCaps)(C.gst_caps_new_any())
+}
+
+func CapsNewEmptySimple(media_type string) *GstCaps {
 	c := C.gst_caps_new_any()
 	return (*GstCaps)(c)
 }
