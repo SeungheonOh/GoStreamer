@@ -11,20 +11,23 @@ import (
 */
 import "C"
 
-type GstPipeline C.GstPipeline
+type GstPipeline struct {
+	GstBin
+}
 
 func (p *C.GstPipeline) impl() *GstPipeline {
-	return (*GstPipeline)(p)
+	return (*GstPipeline)(unsafe.Pointer(p))
 }
 
 func (p *GstPipeline) native() *C.GstPipeline {
-	return (*C.GstPipeline)(p)
+	return (*C.GstPipeline)(unsafe.Pointer(p))
 }
 
-func PipelineNew(name string) *GstElement {
+func PipelineNew(name string) *GstPipeline {
 	n := C.CString(name)
 	defer C.free(unsafe.Pointer(n))
-	return C.gst_pipeline_new((*C.gchar)(n)).impl()
+	p := C.gst_pipeline_new((*C.gchar)(n))
+	return (*C.GstPipeline)(unsafe.Pointer(p)).impl()
 }
 
 func (p *GstPipeline) AutoClock() {

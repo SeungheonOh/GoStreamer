@@ -12,7 +12,6 @@ import (
 import "C"
 
 type GstElementFactory C.GstElementFactory
-
 type GstElementFactoryListType C.GstElementFactoryListType
 
 func (s *C.GstElementFactory) impl() *GstElementFactory {

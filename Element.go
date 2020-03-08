@@ -91,7 +91,7 @@ func (e *GstElement) GetBus() *GstBus {
 }
 
 func (e *GstElement) GetClock() *GstClock {
-	return (*GstClock)(C.gst_element_get_clock(e.native()))
+	return (C.gst_element_get_clock(e.native())).impl()
 }
 
 func (e *GstElement) GetContext(context_type string) *GstContext {
@@ -220,7 +220,7 @@ func (e *GstElement) PostMessage(message *GstMessage) bool {
 
 func (e *GstElement) ProvideClock() *GstClock {
 	c := C.gst_element_provide_clock(e.native())
-	return (*GstClock)(c)
+	return c.impl()
 }
 
 func (e *GstElement) Query(query *GstQuery) bool {

@@ -7,12 +7,14 @@ import (
 )
 
 func init() {
-	argv := os.Args[2:]
+	argv := os.Args
 	GstInit(&argv)
 }
 
 func TestVersion(t *testing.T) {
-	fmt.Println(GstGetVersion())
+	fmt.Println("=====Version=====")
+	fmt.Println(GstVersion())
+	fmt.Println(GstVersionString())
 }
 
 func TestElement(t *testing.T) {
@@ -36,4 +38,20 @@ func TestElementFactory(t *testing.T) {
 	e := ElementFactoryMake("videotestsrc", "MyVideoSrc")
 	state, _, _ := e.GetState(1000)
 	fmt.Println(state.GetName())
+}
+
+func TestSimple(t *testing.T) {
+	fmt.Println("=====Simple=====")
+
+	src := ElementFactoryMake("videotestsrc", "src")
+	sink := ElementFactoryMake("xvimagesink", "sink")
+
+	pipe := PipelineNew("pipeline")
+	pipe.Add(src, sink)
+
+	src.Link(sink)
+	pipe.SetState(GST_STATE_PLAYING)
+
+	for {
+	}
 }

@@ -1,7 +1,7 @@
 package gostreamer
 
 import (
-//	"unsafe"
+	"unsafe"
 )
 
 /*
@@ -11,7 +11,10 @@ import (
 */
 import "C"
 
-type GstClock C.GstClock
+//type GstClock C.GstClock
+type GstClock struct {
+	GstObject
+}
 type GstClockID C.GstClockID
 type GstClockTime C.GstClockTime
 type GstClockTimeDiff C.GstClockTimeDiff
@@ -41,11 +44,11 @@ const (
 )
 
 func (c *C.GstClock) impl() *GstClock {
-	return (*GstClock)(c)
+	return (*GstClock)(unsafe.Pointer(c))
 }
 
 func (c *GstClock) native() *C.GstClock {
-	return (*C.GstClock)(c)
+	return (*C.GstClock)(unsafe.Pointer(c))
 }
 
 func (c *GstClock) AddObservation(slave, master GstClockTime, r_squared *float64) bool {
