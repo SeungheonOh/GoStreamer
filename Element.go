@@ -95,27 +95,27 @@ func (e *GstElement) GetClock() *GstClock {
 }
 
 func (e *GstElement) GetContext(context_type string) *GstContext {
-	c := (*C.gchar)(C.CString(context_type))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(c)))
-	return (*GstContext)(C.gst_element_get_context(e.native(), c))
+	c := C.CString(context_type)
+	defer C.free(unsafe.Pointer(c))
+	return (*GstContext)(C.gst_element_get_context(e.native(), (*C.gchar)(c)))
 }
 
 func (e *GstElement) GetContextUnlocked(context_type string) *GstContext {
-	c := (*C.gchar)(C.CString(context_type))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(c)))
-	return (*GstContext)(C.gst_element_get_context_unlocked(e.native(), c))
+	c := C.CString(context_type)
+	defer C.free(unsafe.Pointer(c))
+	return (*GstContext)(C.gst_element_get_context_unlocked(e.native(), (*C.gchar)(c)))
 }
 
 func (e *GstElement) GetMetadata(key string) string {
-	k := (*C.gchar)(C.CString(key))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(k)))
-	return C.GoString(C.gst_element_get_metadata(e.native(), k))
+	k := C.CString(key)
+	defer C.free(unsafe.Pointer(k))
+	return C.GoString(C.gst_element_get_metadata(e.native(), (*C.gchar)(k)))
 }
 
 func (e *GstElement) GetPadTemplate(name string) *GstPadTemplate {
-	n := (*C.gchar)(C.CString(name))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(n)))
-	return (*GstPadTemplate)(C.gst_element_get_pad_template(e.native(), n))
+	n := C.CString(name)
+	defer C.free(unsafe.Pointer(n))
+	return (*GstPadTemplate)(C.gst_element_get_pad_template(e.native(), (*C.gchar)(n)))
 }
 
 func (e *GstElement) GetStartTime() GstClockTime {
@@ -130,7 +130,9 @@ func (e *GstElement) GetState(timeout uint64) (GstState, GstState, GstStateChang
 }
 
 func (e *GstElement) GetStaticPad(name string) *GstPad {
-	return (*GstPad)(C.gst_element_get_static_pad(e.native(), C.CString(name)))
+	n := C.CString(name)
+	defer C.free(unsafe.Pointer(n))
+	return (*GstPad)(C.gst_element_get_static_pad(e.native(), (*C.gchar)(n)))
 }
 
 func (e *GstElement) IsLockedState() bool {
@@ -173,11 +175,11 @@ func (e *GstElement) LinkPadsFiltered(dest *GstElement, srcpadname, destpadname 
 }
 
 func (e *GstElement) UnlinkPads(dest *GstElement, srcpadname, destpadname string) {
-	s := (*C.gchar)(C.CString(srcpadname))
-	d := (*C.gchar)(C.CString(destpadname))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(s)))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(d)))
-	C.gst_element_unlink_pads(e.native(), s, dest.native(), d)
+	s := C.CString(srcpadname)
+	d := C.CString(destpadname)
+	defer C.free(unsafe.Pointer(s))
+	defer C.free(unsafe.Pointer(d))
+	C.gst_element_unlink_pads(e.native(), (*C.gchar)(s), dest.native(), (*C.gchar)(d))
 }
 
 // TODO:PadsFull
@@ -187,9 +189,9 @@ func (e *GstElement) RemovePad(pad *GstPad) bool {
 }
 
 func (e *GstElement) RequestPad(templ *GstPadTemplate, name string, caps *GstCaps) *GstPad {
-	n := (*C.gchar)(C.CString(name))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(n)))
-	return (*GstPad)(C.gst_element_request_pad(e.native(), templ.native(), n, caps.native()))
+	n := C.CString(name)
+	defer C.free(unsafe.Pointer(n))
+	return (*GstPad)(C.gst_element_request_pad(e.native(), templ.native(), (*C.gchar)(n), caps.native()))
 }
 
 func (e *GstElement) LostState() {
@@ -197,15 +199,15 @@ func (e *GstElement) LostState() {
 }
 
 func (e *GstElement) MessageFull(message_type GstMessageType, domain uint32, code int, text, debug, file, function string, line int) {
-	t := (*C.gchar)(C.CString(text))
-	d := (*C.gchar)(C.CString(debug))
-	fi := (*C.gchar)(C.CString(file))
-	fu := (*C.gchar)(C.CString(function))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(t)))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(d)))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(fi)))
-	defer C.g_free((C.gpointer)(unsafe.Pointer(fu)))
-	C.gst_element_message_full(e.native(), C.GstMessageType(message_type), C.GQuark(domain), C.gint(C.int(code)), t, d, fi, fu, C.gint(C.int(line)))
+	t := C.CString(text)
+	d := C.CString(debug)
+	fi := C.CString(file)
+	fu := C.CString(function)
+	defer C.free(unsafe.Pointer(t))
+	defer C.free(unsafe.Pointer(d))
+	defer C.free(unsafe.Pointer(fi))
+	defer C.free(unsafe.Pointer(fu))
+	C.gst_element_message_full(e.native(), C.GstMessageType(message_type), C.GQuark(domain), C.gint(C.int(code)), (*C.gchar)(t), (*C.gchar)(d), (*C.gchar)(fi), (*C.gchar)(fu), C.gint(C.int(line)))
 }
 
 func (e *GstElement) NoMorePads() {
@@ -266,11 +268,11 @@ func (e *GstElement) SyncStateWithParent() bool {
 }
 
 func GstElementMakeFromURI(uri_type GstURIType, uri string, elementname string) *GstElement {
-	u := (*C.gchar)(C.CString(uri))
-	e := (*C.gchar)(C.CString(elementname))
-	defer C.g_free(C.gpointer(unsafe.Pointer(u)))
-	defer C.g_free(C.gpointer(unsafe.Pointer(e)))
-	element := C.gst_element_make_from_uri(C.GstURIType(uri_type), u, e, nil)
+	u := C.CString(uri)
+	e := C.CString(elementname)
+	defer C.free(unsafe.Pointer(u))
+	defer C.free(unsafe.Pointer(e))
+	element := C.gst_element_make_from_uri(C.GstURIType(uri_type), (*C.gchar)(u), (*C.gchar)(e), nil)
 	return (*GstElement)(unsafe.Pointer(element))
 }
 

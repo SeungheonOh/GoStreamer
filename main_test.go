@@ -2,18 +2,38 @@ package gostreamer
 
 import (
 	"fmt"
+	"os"
 	"testing"
 )
 
-func TestA(t *testing.T) {
+func init() {
+	argv := os.Args[2:]
+	GstInit(&argv)
+}
+
+func TestVersion(t *testing.T) {
+	fmt.Println(GstGetVersion())
+}
+
+func TestElement(t *testing.T) {
+	fmt.Println("=====Element=====")
 	fmt.Println(GstElementStateGetName(GST_STATE_NULL))
 	fmt.Println(GST_STATE_READY.GetName())
+}
 
-	test := CapsFromString("video/x-raw-yuv")
-	fmt.Println(test.native() == nil)
-	fmt.Println(test.IsFixed())
-	fmt.Println(test.GetSize())
+func TestCaps(t *testing.T) {
+	fmt.Println("=====Caps=====")
+	test := CapsFromString("video/x-raw")
+	fmt.Println("Caps is fixed: ", test.IsFixed())
+	fmt.Println("Caps size: ", test.GetSize())
 
-	pipe := PipelineNew("Pl")
-	_ = pipe
+	capsfeature := CapsFeaturesNewAny()
+	fmt.Println("Caps Features Any to string: ", capsfeature.ToString())
+}
+
+func TestElementFactory(t *testing.T) {
+	fmt.Println("=====ElementFactory=====")
+	e := ElementFactoryMake("videotestsrc", "MyVideoSrc")
+	state, _, _ := e.GetState(1000)
+	fmt.Println(state.GetName())
 }
