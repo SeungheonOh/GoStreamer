@@ -14,4 +14,6 @@ func TestA(t *testing.T) {
 	fmt.Println(test.IsFixed())
 	fmt.Println(test.GetSize())
 
+	pipe := PipelineNew("Pl")
+	_ = pipe
 }
