@@ -20,41 +20,32 @@ type GstStateChangeReturn int
 type GstURIType int
 
 const (
-	GST_ELEMENT_FLAG_LOCKED_STATE  GstElementFlags = 16
-	GST_ELEMENT_FLAG_SINK          GstElementFlags = 32
-	GST_ELEMENT_FLAG_SOURCE        GstElementFlags = 64
-	GST_ELEMENT_FLAG_PROVIDE_CLOCK GstElementFlags = 128
-	GST_ELEMENT_FLAG_REQUIRE_CLOCK GstElementFlags = 256
-	GST_ELEMENT_FLAG_INDEXABLE     GstElementFlags = 512
-	GST_ELEMENT_FLAG_LAST          GstElementFlags = 16384
-)
-
-const (
-	GST_STATE_VOID_PENDING GstState = 0
-	GST_STATE_NULL         GstState = 1
-	GST_STATE_READY        GstState = 2
-	GST_STATE_PAUSED       GstState = 3
-	GST_STATE_PLAYING      GstState = 4
-)
-
-const (
-	GST_STATE_CHANGE_NULL_TO_READY      GstStateChange = 10
-	GST_STATE_CHANGE_READY_TO_PAUSED    GstStateChange = 19
-	GST_STATE_CHANGE_PAUSED_TO_PLAYING  GstStateChange = 28
-	GST_STATE_CHANGE_PLAYING_TO_PAUSED  GstStateChange = 35
-	GST_STATE_CHANGE_PAUSED_TO_READY    GstStateChange = 26
-	GST_STATE_CHANGE_READY_TO_NULL      GstStateChange = 17
-	GST_STATE_CHANGE_NULL_TO_NULL       GstStateChange = 9
-	GST_STATE_CHANGE_READY_TO_READY     GstStateChange = 18
-	GST_STATE_CHANGE_PAUSED_TO_PAUSED   GstStateChange = 27
-	GST_STATE_CHANGE_PLAYING_TO_PLAYING GstStateChange = 36
-)
-
-const (
-	GST_STATE_CHANGE_FAILURE    GstStateChangeReturn = 0
-	GST_STATE_CHANGE_SUCCESS                         = 1
-	GST_STATE_CHANGE_ASYNC                           = 2
-	GST_STATE_CHANGE_NO_PREROLL                      = 3
+	GST_ELEMENT_FLAG_LOCKED_STATE       GstElementFlags      = 16
+	GST_ELEMENT_FLAG_SINK               GstElementFlags      = 32
+	GST_ELEMENT_FLAG_SOURCE             GstElementFlags      = 64
+	GST_ELEMENT_FLAG_PROVIDE_CLOCK      GstElementFlags      = 128
+	GST_ELEMENT_FLAG_REQUIRE_CLOCK      GstElementFlags      = 256
+	GST_ELEMENT_FLAG_INDEXABLE          GstElementFlags      = 512
+	GST_ELEMENT_FLAG_LAST               GstElementFlags      = 16384
+	GST_STATE_VOID_PENDING              GstState             = 0
+	GST_STATE_NULL                      GstState             = 1
+	GST_STATE_READY                     GstState             = 2
+	GST_STATE_PAUSED                    GstState             = 3
+	GST_STATE_PLAYING                   GstState             = 4
+	GST_STATE_CHANGE_NULL_TO_READY      GstStateChange       = 10
+	GST_STATE_CHANGE_READY_TO_PAUSED    GstStateChange       = 19
+	GST_STATE_CHANGE_PAUSED_TO_PLAYING  GstStateChange       = 28
+	GST_STATE_CHANGE_PLAYING_TO_PAUSED  GstStateChange       = 35
+	GST_STATE_CHANGE_PAUSED_TO_READY    GstStateChange       = 26
+	GST_STATE_CHANGE_READY_TO_NULL      GstStateChange       = 17
+	GST_STATE_CHANGE_NULL_TO_NULL       GstStateChange       = 9
+	GST_STATE_CHANGE_READY_TO_READY     GstStateChange       = 18
+	GST_STATE_CHANGE_PAUSED_TO_PAUSED   GstStateChange       = 27
+	GST_STATE_CHANGE_PLAYING_TO_PLAYING GstStateChange       = 36
+	GST_STATE_CHANGE_FAILURE            GstStateChangeReturn = 0
+	GST_STATE_CHANGE_SUCCESS            GstStateChangeReturn = 1
+	GST_STATE_CHANGE_ASYNC              GstStateChangeReturn = 2
+	GST_STATE_CHANGE_NO_PREROLL         GstStateChangeReturn = 3
 )
 
 const (
@@ -239,7 +230,7 @@ func (e *GstElement) SendEvent(event *GstEvent) bool {
 }
 
 func (e *GstElement) SetBaseTime(time GstClockTime) {
-	C.gst_element_set_base_time(e.native(), *time.native())
+	C.gst_element_set_base_time(e.native(), C.GstClockTime(time))
 }
 
 func (e *GstElement) SetBus(bus *GstBus) {
@@ -263,7 +254,7 @@ func (e *GstElement) SetLockedState(locked_state bool) bool {
 }
 
 func (e *GstElement) SetStartTime(time GstClockTime) {
-	C.gst_element_set_start_time(e.native(), *time.native())
+	C.gst_element_set_start_time(e.native(), C.GstClockTime(time))
 }
 
 func (e *GstElement) SetState(state GstState) GstStateChangeReturn {
