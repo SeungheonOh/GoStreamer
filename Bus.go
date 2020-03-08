@@ -1,7 +1,7 @@
 package gostreamer
 
 import (
-//	"unsafe"
+	"unsafe"
 )
 
 /*
@@ -11,14 +11,16 @@ import (
 */
 import "C"
 
-type GstBus C.GstBus
+type GstBus struct {
+	GstObject
+}
 
-func (s *C.GstBus) impl() *GstBus {
-	return (*GstBus)(s)
+func (b *C.GstBus) impl() *GstBus {
+	return (*GstBus)(unsafe.Pointer(b))
 }
 
 func (b *GstBus) native() *C.GstBus {
-	return (*C.GstBus)(b)
+	return (*C.GstBus)(unsafe.Pointer(b))
 }
 
 func BusNew() *GstBus {

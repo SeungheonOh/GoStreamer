@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 )
 
 func init() {
@@ -53,5 +54,10 @@ func TestSimple(t *testing.T) {
 	pipe.SetState(GST_STATE_PLAYING)
 
 	for {
+		fmt.Println(pipe.GetState(500))
+		time.Sleep(time.Millisecond * 100)
+		pipe.SetState(GST_STATE_PAUSED)
+		time.Sleep(time.Millisecond * 100)
+		pipe.SetState(GST_STATE_PLAYING)
 	}
 }

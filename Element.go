@@ -87,7 +87,7 @@ func (e *GstElement) GetBaseTime() GstClockTime {
 }
 
 func (e *GstElement) GetBus() *GstBus {
-	return (*GstBus)(C.gst_element_get_bus(e.native()))
+	return (C.gst_element_get_bus(e.native())).impl()
 }
 
 func (e *GstElement) GetClock() *GstClock {
