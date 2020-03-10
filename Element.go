@@ -1,6 +1,7 @@
 package gostreamer
 
 import (
+	"github.com/gotk3/gotk3/glib"
 	"unsafe"
 )
 
@@ -11,7 +12,10 @@ import (
 */
 import "C"
 
-type GstElement C.GstElement
+//type GstElement C.GstElement
+type GstElement struct {
+	glib.Object
+}
 
 type GstElementFlags int
 type GstState int
@@ -55,11 +59,11 @@ const (
 )
 
 func (s *C.GstElement) impl() *GstElement {
-	return (*GstElement)(s)
+	return (*GstElement)(unsafe.Pointer(s))
 }
 
 func (e *GstElement) native() *C.GstElement {
-	return (*C.GstElement)(e)
+	return (*C.GstElement)(unsafe.Pointer(e))
 }
 
 func (e *GstElement) AbortState() {

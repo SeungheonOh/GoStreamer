@@ -47,17 +47,20 @@ func TestSimple(t *testing.T) {
 	src := ElementFactoryMake("videotestsrc", "src")
 	sink := ElementFactoryMake("xvimagesink", "sink")
 
+	src.Set("uri", "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm")
+
 	pipe := PipelineNew("pipeline")
 	pipe.Add(src, sink)
-
 	src.Link(sink)
-	pipe.SetState(GST_STATE_PLAYING)
 
+	bus := pipe.GetBus()
 	for {
-		fmt.Println(pipe.GetState(500))
-		time.Sleep(time.Millisecond * 100)
 		pipe.SetState(GST_STATE_PAUSED)
-		time.Sleep(time.Millisecond * 100)
+		msg := bus.TimedPopFiltered(GST_CLOCK_TIME_NONE, GST_MESSAGE_ELEMENT)
+		fmt.Println("Bus message", msg.Type().GetName())
+		msg.Unref()
 		pipe.SetState(GST_STATE_PLAYING)
+		time.Sleep(time.Millisecond * 100)
 	}
+
 }

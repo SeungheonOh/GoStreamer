@@ -41,6 +41,8 @@ const (
 	GST_CLOCK_ERROR                      GstClockReturn    = 5
 	GST_CLOCK_UNSUPPORTED                GstClockReturn    = 6
 	GST_CLOCK_DONE                       GstClockReturn    = 7
+
+	GST_CLOCK_TIME_NONE GstClockTime = C.GST_CLOCK_TIME_NONE
 )
 
 func (c *C.GstClock) impl() *GstClock {

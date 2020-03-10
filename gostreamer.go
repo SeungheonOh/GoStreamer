@@ -38,6 +38,10 @@ func GstEasyInit() {
 	GstInit(&argv)
 }
 
+func GstDeinit() {
+	C.gst_deinit()
+}
+
 func GstInitCheck(argv *[]string) bool {
 	if argv == nil {
 		return false

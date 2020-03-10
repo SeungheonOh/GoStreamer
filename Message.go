@@ -44,6 +44,10 @@ const (
 	GST_MESSAGE_ANY              GstMessageType = 429496729
 )
 
+func (m GstMessageType) GetName() string {
+	return C.GoString(C.gst_message_type_get_name(C.GstMessageType(m)))
+}
+
 func (s *C.GstMessage) impl() *GstMessage {
 	return (*GstMessage)(s)
 }
@@ -52,10 +56,17 @@ func (m *GstMessage) native() *C.GstMessage {
 	return (*C.GstMessage)(m)
 }
 
+func (m *GstMessage) Type() GstMessageType {
+	if m == nil {
+		return 0
+	}
+	return GstMessageType((m.native())._type)
+}
+
 func GstMessageNewApplication(src *GstObject, structure *GstStructure) *GstMessage {
 	return (*GstMessage)(C.gst_message_new_application(src.native(), structure.native()))
 }
 
-func (m *GstMessage) GstMessageUnref() {
+func (m *GstMessage) Unref() {
 	C.gst_message_unref(m.native())
 }

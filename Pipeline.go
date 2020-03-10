@@ -23,6 +23,10 @@ func (p *GstPipeline) native() *C.GstPipeline {
 	return (*C.GstPipeline)(unsafe.Pointer(p))
 }
 
+func (e *GstElement) ToPipeline() *GstPipeline {
+	return (*GstPipeline)(unsafe.Pointer(e))
+}
+
 func PipelineNew(name string) *GstPipeline {
 	n := C.CString(name)
 	defer C.free(unsafe.Pointer(n))

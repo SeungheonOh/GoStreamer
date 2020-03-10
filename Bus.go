@@ -79,6 +79,6 @@ func (b *GstBus) TimedPop(timeout GstClockTime) *GstMessage {
 	return C.gst_bus_timed_pop(b.native(), C.GstClockTime(timeout)).impl()
 }
 
-func (b *GstBus) TimedPopFilter(timeout GstClockTime, types GstMessageType) *GstMessage {
+func (b *GstBus) TimedPopFiltered(timeout GstClockTime, types GstMessageType) *GstMessage {
 	return C.gst_bus_timed_pop_filtered(b.native(), C.GstClockTime(timeout), C.GstMessageType(types)).impl()
 }
