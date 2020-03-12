@@ -41,7 +41,6 @@ func TestElementFactory(t *testing.T) {
 }
 
 func TestSimple(t *testing.T) {
-	return
 	fmt.Println("=====Simple=====")
 
 	src := ElementFactoryMake("videotestsrc", "src")
@@ -54,37 +53,6 @@ func TestSimple(t *testing.T) {
 	pipe.SetState(GST_STATE_PLAYING)
 
 	bus := pipe.GetBus()
-	msg := bus.TimedPopFiltered(GST_CLOCK_TIME_NONE, GST_MESSAGE_ERROR|GST_MESSAGE_EOS)
-	fmt.Println("Bus message", msg.Type().GetName())
-	msg.Unref()
-}
-
-func TestNotSimple(t *testing.T) {
-	fmt.Println("=====NotSimple=====")
-	source := ElementFactoryMake("uridecodebin", "source")
-	convert := ElementFactoryMake("audioconvert", "convert")
-	resample := ElementFactoryMake("audioresample", "resmaple")
-	sink := ElementFactoryMake("autoaudiosink", "sink")
-
-	pipeline := PipelineNew("test-pipe")
-
-	if source == nil || convert == nil || resample == nil || sink == nil || pipeline == nil {
-		panic("Failed to initialize elements")
-	}
-
-	if !pipeline.Add(source, convert, resample, sink) {
-		panic("Failed to add")
-	}
-	if !source.Link(convert, resample, sink) {
-		panic("Failed to link")
-	}
-
-	change_state := pipeline.SetState(GST_STATE_PLAYING)
-	if change_state == GST_STATE_CHANGE_FAILURE {
-		panic("failed to play")
-	}
-
-	bus := pipeline.GetBus()
 	msg := bus.TimedPopFiltered(GST_CLOCK_TIME_NONE, GST_MESSAGE_ERROR|GST_MESSAGE_EOS)
 	fmt.Println("Bus message", msg.Type().GetName())
 	msg.Unref()

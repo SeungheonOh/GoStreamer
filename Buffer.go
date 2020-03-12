@@ -12,6 +12,8 @@ import (
 import "C"
 
 type GstBuffer C.GstBuffer
+type GstBufferCopyFlags C.GstBufferCopyFlags
+type GstBufferFlags C.GstBufferFlags
 
 func (s *C.GstBuffer) impl() *GstBuffer {
 	return (*GstBuffer)(s)

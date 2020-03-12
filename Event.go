@@ -1,7 +1,7 @@
 package gostreamer
 
 import (
-//	"unsafe"
+	"unsafe"
 )
 
 /*
@@ -12,11 +12,14 @@ import (
 import "C"
 
 type GstEvent C.GstEvent
+type GstEventType C.GstEventType
+type GstEventTypeFlags C.GstEventTypeFlags
+type GstQOSType C.GstQOSType
 
-func (s *C.GstEvent) impl() *GstEvent {
-	return (*GstEvent)(s)
+func (e *C.GstEvent) impl() *GstEvent {
+	return (*GstEvent)(unsafe.Pointer(e))
 }
 
 func (e *GstEvent) native() *C.GstEvent {
-	return (*C.GstEvent)(e)
+	return (*C.GstEvent)(unsafe.Pointer(e))
 }
