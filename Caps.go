@@ -11,7 +11,7 @@ import (
 */
 import "C"
 
-type GstCaps *C.GstCaps
+type GstCaps C.GstCaps
 
 // GstCapsIntersectMode
 type GstCapsIntersectMode C.GstCapsIntersectMode
