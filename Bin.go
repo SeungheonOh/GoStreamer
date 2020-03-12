@@ -29,10 +29,13 @@ func (b *GstBin) New(name string) *GstElement {
 	return C.gst_bin_new((*C.gchar)(n)).impl()
 }
 
-func (b *GstBin) Add(elements ...*GstElement) {
+func (b *GstBin) Add(elements ...*GstElement) bool {
 	for _, e := range elements {
-		C.gst_bin_add(b.native(), e.native())
+		if C.gst_bin_add(b.native(), e.native()) == 0 {
+			return false
+		}
 	}
+	return true
 }
 
 func (b *GstBin) FindUnlinkedPad(direction GstPadDirection) *GstPad {

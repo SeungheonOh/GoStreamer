@@ -20,3 +20,15 @@ func (s *C.GstPadTemplate) impl() *GstPadTemplate {
 func (p *GstPadTemplate) native() *C.GstPadTemplate {
 	return (*C.GstPadTemplate)(p)
 }
+
+// StaticTemplate
+
+type GstStaticPadTemplate C.GstStaticPadTemplate
+
+func (s *C.GstStaticPadTemplate) impl() *GstStaticPadTemplate {
+	return (*GstStaticPadTemplate)(s)
+}
+
+func (p *GstStaticPadTemplate) native() *C.GstStaticPadTemplate {
+	return (*C.GstStaticPadTemplate)(p)
+}

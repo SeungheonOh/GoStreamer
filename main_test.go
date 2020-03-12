@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"testing"
-	"time"
 )
 
 func init() {
@@ -42,25 +41,51 @@ func TestElementFactory(t *testing.T) {
 }
 
 func TestSimple(t *testing.T) {
+	return
 	fmt.Println("=====Simple=====")
 
 	src := ElementFactoryMake("videotestsrc", "src")
 	sink := ElementFactoryMake("xvimagesink", "sink")
 
-	src.Set("uri", "https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm")
-
 	pipe := PipelineNew("pipeline")
 	pipe.Add(src, sink)
 	src.Link(sink)
 
+	pipe.SetState(GST_STATE_PLAYING)
+
 	bus := pipe.GetBus()
-	for {
-		pipe.SetState(GST_STATE_PAUSED)
-		msg := bus.TimedPopFiltered(GST_CLOCK_TIME_NONE, GST_MESSAGE_ELEMENT)
-		fmt.Println("Bus message", msg.Type().GetName())
-		msg.Unref()
-		pipe.SetState(GST_STATE_PLAYING)
-		time.Sleep(time.Millisecond * 100)
+	msg := bus.TimedPopFiltered(GST_CLOCK_TIME_NONE, GST_MESSAGE_ERROR|GST_MESSAGE_EOS)
+	fmt.Println("Bus message", msg.Type().GetName())
+	msg.Unref()
+}
+
+func TestNotSimple(t *testing.T) {
+	fmt.Println("=====NotSimple=====")
+	source := ElementFactoryMake("uridecodebin", "source")
+	convert := ElementFactoryMake("audioconvert", "convert")
+	resample := ElementFactoryMake("audioresample", "resmaple")
+	sink := ElementFactoryMake("autoaudiosink", "sink")
+
+	pipeline := PipelineNew("test-pipe")
+
+	if source == nil || convert == nil || resample == nil || sink == nil || pipeline == nil {
+		panic("Failed to initialize elements")
 	}
 
+	if !pipeline.Add(source, convert, resample, sink) {
+		panic("Failed to add")
+	}
+	if !source.Link(convert, resample, sink) {
+		panic("Failed to link")
+	}
+
+	change_state := pipeline.SetState(GST_STATE_PLAYING)
+	if change_state == GST_STATE_CHANGE_FAILURE {
+		panic("failed to play")
+	}
+
+	bus := pipeline.GetBus()
+	msg := bus.TimedPopFiltered(GST_CLOCK_TIME_NONE, GST_MESSAGE_ERROR|GST_MESSAGE_EOS)
+	fmt.Println("Bus message", msg.Type().GetName())
+	msg.Unref()
 }
