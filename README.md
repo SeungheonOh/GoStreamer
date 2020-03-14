@@ -1,4 +1,4 @@
 # GoStreamer
 Go binding of GStreamer
 
-[https://godoc.org/SeungheonOh/GoStreamer](Doc)
+[Documentation](https://godoc.org/SeungheonOh/GoStreamer)
