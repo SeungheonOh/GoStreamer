@@ -431,4 +431,4 @@ func (p GstPadLinkReturn) GetName() string {
 // GstPadProbeInfo
 // TODO
 
-//TODO: Task, Event, Stream, PadTemplate(Static), Query, Format
+//TODO: Event, Stream, PadTemplate(Static), Query, Format
