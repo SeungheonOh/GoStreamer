@@ -186,4 +186,39 @@ func (q *GstQuery) ParseAcceptCapsResult() bool {
 func (q *GstQuery) ParseAllocation() {
 }
 
+/*
+type Caps struct {
+  native *C.GstCaps
+}
+
+func newCaps(native *C.GstCaps) *Caps {
+  caps := &Caps{native: native}
+  runtime.SetFinalizer(caps, caps.free)
+  return caps
+}
+
+func (c *Caps) free() {
+  runtime.SetFinalizer(c, nil)
+  C.gst_deref_blah(c.native)
+}
+
+func (q *Query) ParseAcceptCaps() []*Caps {
+  var first *C.GstCaps
+
+  first := unsafe.Pointer(&first)
+  size := unsafe.Sizeof((*C.GstCaps)(nil))
+  next := func(caps *C.GstCaps) *C.GstCaps {
+    return (*C.GstCaps)(unsafe.Pointer(uintptr(unsafe.Pointer(caps)) + size))
+  }
+
+  C.gst_query_parse_accept_caps(q.native, (**C.GstCaps)(start))
+
+  var caps []*Caps
+  for c := first; c != nil; c = next(c) {
+    caps = append(caps, newCaps(c))
+  }
+  return caps
+}
+*/
+
 //func (q *GstQuery)
