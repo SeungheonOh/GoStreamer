@@ -41,16 +41,11 @@ func (t *GstTask) GetPool() *GstTaskPool {
 }
 
 func (t *GstTask) GetState() GstTaskState {
-	return C.GstTaskState(C.gst_task_get_state(t.native()))
+	return GstTaskState(C.gst_task_get_state(t.native()))
 }
 
-func (t *GstTask) Join(tasks ...*GstTask) bool {
-	for _, task := range tasks {
-		if C.gst_task_join(t.native()) == 0 {
-			return false
-		}
-	}
-	return true
+func (t *GstTask) Join() bool {
+	return C.gst_task_join(t.native()) != 0
 }
 
 func (t *GstTask) Pause() bool {
